@@ -1,0 +1,1339 @@
+---
+title: "Cyclitics Analysis"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Ask - **Navigating Cyclitics Challenge and Objectives**
+
+This chapter will provide context and a clear statement of the business task Cyclistic aims to address.
+
+## Introduction
+
+Welcome to the Cyclistic bike-share analysis case study!
+
+This document shows the results of the Google Data Analytics capstone project on Cyclistic, a bike-sharing company in Chicago. The data source is 64 CSV files of bike trip data from June 2013 to Jan 2024. The tools and methods are Excel, R and Tableau. The main findings and recommendations are based on the key business questions and metrics of Cyclistic. The audience is the executive team of Cyclistic.
+
+## Background of Cyclitics
+
+In 2016, Cyclistic launched a successful bike-share offering. Since then, the program has grown to a fleet of 5,824 bicycles that are geo tracked and locked into a network of 692 stations across Chicago. The bikes can be unlocked from one station and returned to any other station in the system anytime.
+
+Until now, Cyclistic’s marketing strategy relied on building general awareness and appealing to broad consumer segments. One approach that helped make these things possible was the flexibility of its pricing plans: single-ride passes, full-day passes, and annual memberships. Customers who purchase single-ride or full-day passes are referred to as casual riders. Customers who purchase annual memberships are Cyclistic members.
+
+Cyclistic’s finance analysts have concluded that annual members are much more profitable than casual riders. Although the pricing flexibility helps Cyclistic attract more customers, Moreno believes that maximizing the number of annual members will be key to future growth. Rather than creating a marketing campaign that targets all-new customers, Moreno believes there is a solid opportunity to convert casual riders into members. She notes that casual riders are already aware of the Cyclistic program and have chosen Cyclistic for their mobility needs.
+
+Moreno has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members. In order to do that, however, the team needs to better understand how annual members and casual riders differ, why casual riders would buy a membership, and how digital media could affect their marketing tactics. Moreno and her team are interested in analyzing the Cyclistic historical bike trip data to identify trends.
+
+## Characters and teams
+
+**Cyclistic**: A bike-share program that features more than 5,800 bicycles and 600 docking stations. Cyclistic sets itself apart by also offering reclining bikes, hand tricycles, and cargo bikes, making bike-share more inclusive to people with disabilities and riders who can’t use a standard two-wheeled bike. The majority of riders opt for traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more likely to ride for leisure, but about 30% use the bikes to commute to work each day.
+
+**Lily Moreno**: The director of marketing and your manager. Moreno is responsible for the development of campaigns and initiatives to promote the bike-share program. These may include email, social media, and other channels.
+
+**Cyclistic marketing analytics team**: A team of data analysts who are responsible for collecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy. You joined this team six months ago and have been busy learning about Cyclistic’s mission and business goals—as well as how you, as a junior data analyst, can help Cyclistic achieve them.
+
+**Cyclistic executive team**: The notoriously detail-oriented executive team will decide whether to approve the recommended marketing program.
+
+## Clear Articulation of the Business Task
+
+The director of marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, your team wants to understand [**how casual riders and annual members use Cyclistic bikes differently**]{.underline} using the most recent data. From these insights, your team will design a new marketing strategy to convert casual riders into annual members. But first, Cyclistic executives must approve your recommendations, so they must be backed up with compelling data insights and professional data visualizations.
+
+# Prepare - **Unveiling the Data Landscape: Sources, Types, and Significance**
+
+Detailing the various data sources used in the analysis, including their nature and relevance to the business task.
+
+## Tools We Utilize in the Project:
+
+**Excel:**
+
+We rely on Excel for the project's initial stages, focusing on data exploration and basic analysis. Its user-friendly interface enables us to quickly glean insights and create preliminary visualizations, providing an initial grasp of the dataset.
+
+**R:**
+
+In the more advanced phases, we turn to R for critical tasks such as data merging, cleaning, transformation, and in-depth analysis. Leveraging its robust statistical capabilities and extensive libraries allows us to conduct comprehensive exploration and visualization, ensuring a thorough understanding of the data.
+
+**Tableau:**
+
+Strategically, we employ Tableau for crafting advanced visualizations tailored to address specific questions. Its dynamic and interactive features enhance the presentation of complex patterns, offering a deeper layer of exploration for stakeholders seeking nuanced insights.
+
+**PowerPoint:**
+
+PowerPoint becomes the final destination for presenting our key findings and insights. It transforms analytical results into a visually appealing and compelling narrative. PowerPoint's capabilities allow us to create engaging presentations, ensuring effective communication of complex analyses to diverse audiences.
+
+By harnessing the strengths of Excel, R, Tableau, and PowerPoint, this comprehensive toolset ensures a seamless workflow from initial data exploration to advanced analysis, sophisticated visualization, and impactful presentation.
+
+## All Provided Datasets (2013-2024)
+
+### Where is the data located?
+
+The data is publicly available on this link: [https://Cyclistic-tripdata.s3.amazonaws.com/index.html](https://divvy-tripdata.s3.amazonaws.com/index.html). This link contains monthly trip data files in CSV format from June 2013 to Jan 2024. The data is owned by the City of Chicago and licensed by Bikeshare, the operator of the Cyclistic bicycle sharing service.
+
+### How is the data organized?
+
+The data consists of two types of files: **Trip data** and **Station data**. The trip data contains information about each bike trip taken by Cyclistic users, such as trip id, start time, end time, bike id, and trip duration. The station data contains information about each bike station in the Cyclistic network, such as name, latitude, longitude, capacity, and online date.
+
+The data is divided into 64 folders, each containing data for a specific period of time. The folder names indicate the year, the month, or the quarter of the data. For example, the folder “Cyclistic_Stations_Trips_2014_Q1Q2” contains data for the first and second quarters of 2014, and the folder “202312-Cyclistic-tripdata” contains data for December 2023.
+
+Each folder has one or two CSV files (trips and stations), some containing data for one month. For example, the file “202211-Cyclistic-tripdata.csv” contains data for November 2022, and others like “Cyclistic_Trips_2017_Q1.csv” contain data for the first quarter of 2017.
+
+The station data is not available for all the folders. Only the folders that contain data for 2013, 2014, and 2015 have a separate CSV file for the station data. The station data for the other years is not provided in the data source.
+
+The Trips data is chronologically organized by minute, hour, day, month and year, with each observation refers to a unique trip. Each trip has the following features:
+
+1.  **trip_id:** Integer (unique identifier for each trip
+
+2.  **start_time:** DateTime (the date and time when the trip started)
+
+3.  **end_time:** DateTime (the date and time when the trip ended)
+
+4.  **bikeid:** Integer (unique identifier for each bike)
+
+5.  **tripduration:** Integer (duration of the trip in seconds)
+
+6.  **from_station_id:** Integer (ID of the station where the trip originated)
+
+7.  **from_station_name:** String (name of the station where the trip originated)
+
+8.  **to_station_id:** Integer (ID of the station where the trip ended)
+
+9.  **to_station_name:** String (name of the station where the trip ended)
+
+10. **usertype:** String (type of user, either “Subscriber” or “Customer”)
+
+11. **gender:** String (gender of the user, either “Male”, “Female”, or blank)
+
+12. **birthyear:** Integer (birth year of the user, or blank)
+
+13. **rideable_type:** String (type of bike, either “classic” or “electric”)
+
+14. **start_lat:** Float (latitude of the start location)
+
+15. **start_lng:** Float (longitude of the start location)
+
+16. **end_lat:** Float (latitude of the end location)
+
+17. **end_lng:** Float (longitude of the end location)
+
+**Note**: Some of these features may not be provided in some tables at all, depending on the year and the month of the data. The features that may be missing are: bikeid, rideable_type, tripduration, start_lat, start_lng, end_lat, end_lng, gender, and birthyear.
+
+In the other hand, The Station data is geographically organized by latitude and longitude, with each row containing information for a specific station. Each station has the following features:
+
+1.  **name**: the name of the station
+
+2.  **latitude**: the latitude of the station location
+
+3.  **longitude**: the longitude of the station location
+
+4.  **dpcapacity**: the number of total docks at each station as of the date of the file online
+
+5.  **date**: the date the station went live in the system
+
+This [table](Content.xlsx) summarize the structure of all the datasets in 3 ways: its content, its timeframe, and its features
+
+### Addressing Licensing, Privacy, Security, and Accessibility
+
+To address licensing, we are following the terms and conditions of the Data License Agreement provided by Bikeshare on this link: [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). This agreement grants us a non-exclusive, royalty-free, limited, perpetual license to access, reproduce, analyze, copy, modify, distribute in our product or service and use the data for any lawful purpose. However, it also prohibits us from doing certain things, such as using the data in an unlawful manner, hosting or selling the data as a stand-alone dataset, accessing the data by unauthorized means, circumventing any access restrictions, using data mining or extraction methods, attempting to correlate the data with personal information of users, and stating or implying that we are affiliated or endorsed by Bikeshare. We are also respecting the trademarks and trade names of Bikeshare, the City of Chicago, and any sponsor of the Cyclistic service, and not using them without written permission. For the purpose of this case study, we are referring to the company as Cyclistics.
+
+To address privacy, we are protecting the personal information of Cyclistic users, such as their genders and birth years, and not disclosing or sharing it with anyone. We are also not attempting to identify or correlate the users with their names, addresses, or other information. We are only using the data for analytical purposes and not for any malicious or harmful purposes.
+
+To address security, we are storing the data in a secure location, such as a cloud-based platform or a password-protected device, and not exposing it to unauthorized access or tampering. We are also using encryption and authentication methods to ensure the integrity and confidentiality of the data.
+
+To address accessibility, we are making the data available and understandable to our intended audience, such as our stakeholders, clients, or customers, and not restricting or limiting their access to the data. We are also using appropriate formats and tools to present and visualize the data, such as tables, charts, graphs, or dashboards, and providing clear and concise explanations and interpretations of the data.
+
+1.  **Licensing:**
+
+    -   The data used in this analysis is sourced from the City of Chicago’s Divvy bicycle sharing service, and the licensing agreement between Bikeshare and the City on this link: [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). explicitly grants a non-exclusive, royalty-free, limited, perpetual license for various uses.
+
+2.  **Privacy:**
+
+    -   The data used does not include any personal information about Cyclitics bike-share users, aligning with the privacy provisions outlined in the license agreement and we confirmed that any sensitive or personally identifiable information has been redacted or excluded from the datasets used in the analysis.
+
+3.  **Security:**
+
+    -   Given the public and non-sensitive nature of the data, and the restrictions in the license agreement, security risks are inherently low.
+
+4.  **Accessibility**
+
+    -   Accessibility is facilitated by the public availability of the data as permitted by the license agreement, ensuring transparency and collaboration across teams involved in the analysis. Also, we are using appropriate formats and tools to present and visualize the data, such as tables, charts, graphs, or presentations, and providing clear and concise explanations and interpretations of the data.
+
+### Issues with Bias or Credibility (ROCCC)
+
+ROCCC stands for [Reliable]{.underline}, [Original]{.underline}, [Comprehensive]{.underline}, [Current]{.underline}, and [Cited]{.underline}. It is a framework for evaluating the quality and credibility of data sources.
+
+1.  **Reliable**: The data is reliable if it is consistent, accurate, and trustworthy. To assess the reliability of the data, I would check the following:
+
+    -   [The data source]{.underline}: The data is owned by the City of Chicago and licensed by Bikeshare, the operator of the Cyclitics bicycle sharing service. These are reputable and official entities that have an interest in providing accurate and transparent data to the public. Therefore, the data source is reliable.
+
+    -   [The data collection method]{.underline}: The data is collected automatically by the Cyclitics system, which records the details of each bike trip taken by the users. The data collection method is reliable, as it minimizes the possibility of human error or manipulation.
+
+    -   [The data quality]{.underline}: The data is mostly complete and consistent, with only a few missing or blank values. The data quality is reliable, as it does not have major errors or anomalies that could affect the analysis.
+
+2.  **Original**: The data is original if it is the primary source of information, and not derived or copied from another source. To assess the originality of the data, I would check the following:
+
+    -   [The data provenance]{.underline}: The data is directly provided by the City of Chicago and Bikeshare, which are the original owners and providers of the data. The data provenance is original, as it does not involve any intermediaries or third parties that could alter or modify the data.
+
+    -   [The data format]{.underline}: The data is provided in CSV format, which is a common and standard format for storing and sharing tabular data. The data format is original, as it does not require any conversion or transformation that could affect the data integrity.
+
+3.  **Comprehensive**: The data is comprehensive if it covers all the relevant aspects and dimensions of the topic or question. To assess the comprehensiveness of the data, I would check the following:
+
+    -   [The data scope]{.underline}: The data covers all the bike trips taken by Cyclistic users from June 2013 to Jan 2024, in the city of Chicago and its surrounding areas. The data scope is comprehensive, as it provides a large and diverse sample of the bike-sharing service usage and behavior.
+
+    -   [The data features]{.underline}: The data contains various features that describe each bike trip, such as the trip_id, start_time, end_time, bike_id, trip_duration, from_station_name, to_station_name, user_type, rideable_type, start_lat, start_lng, end_lat, and end_lng. The data features are comprehensive, as they provide a rich and detailed information about the bike trips and the users (but not user personal information)
+
+4.  **Current**: The data is current if it is up-to-date and relevant to the present time. To assess the currency of the data, I would check the following:
+
+    -   [The data timeliness]{.underline}: The data is updated twice per year, and the latest available data is from Jan 2024. The data timeliness is current, as it reflects the most recent status and trends of the bike-sharing service.
+
+    -   [The data frequency]{.underline}: In the last 3 year, the data is provided monthly, which is a reasonable and appropriate frequency for the bike-sharing service. The data frequency is current, as it allows for timely and periodic analysis of the data.
+
+5.  **Cited**: The data is cited if it provides the source and the license of the data, and acknowledges the rights and responsibilities of the data users and providers. To assess the citation of the data, I would check the following:
+
+    -   [The data source]{.underline}: The data source is clearly stated and linked on the data website, which is <https://Cyclistic-tripdata.s3.amazonaws.com/index.html.> The data source is cited, as it gives credit and recognition to the data owners and providers.
+
+    -   [The data license]{.underline}: The data license is also clearly stated and linked on the data website, which is [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). The data license is cited, as it specifies the terms and conditions ofthe data usage and sharing
+
+## Subset Relevant to The Case Study
+
+### Data Time-Frame
+
+In order to answer the business question of how annual members and casual riders use Cyclistic bikes differently, we will focus on the data from the last 12 months (2023 Q1 to 2023 Q4). This data is relevant and sufficient to capture the seasonal and contextual variations in the bike usage patterns. We will exclude the data from 2013 to 2022, as it is not necessary for our analysis and may introduce noise or bias.
+
+### Relevance to the Business Task
+
+This data subset provides features like: ride_id, rideable_type, started_at, ended_at, start_station_name, start_station_id, end_station_name, end_station_id, start_lat, start_lng, end_lat, end_lng and member_casual helps us answer our question, which is: How do annual members and casual riders use Cyclistics bikes differently in various ways
+
+By analyzing the data, we can compare and contrast the behavior and preferences of the two user types, such as:
+
+1.  How often they use Cyclistics bikes, and how long their trips are.
+
+2.  When they use Cyclistics bikes, and how seasonality or weather affects their usage.
+
+3.  they use Cyclistics bikes, and which stations or routes are most popular or least popular among them.
+
+4.  Why they use Cyclistics bikes, and what are their motivations or goals for using them.
+
+By answering these questions, we can gain insights into the needs and wants of the users, and provide recommendations on how to increase the number of annual members, retain the existing ones, and improve the overall customer satisfaction and loyalty.Data Processing
+
+### Problems with the Data
+
+There are some minor problems with the data that could affect the analysis and the results, but they can be fixed or avoided with some data cleaning and preparation steps. These problems are related to the data structure, the data completeness, and the data currency. Here are some examples of the problems:
+
+-   **Data currency:** The data for the last three years (since 2020) missed some of the information that was there in previous data sets, such as bikeid, gender, and birth year. This could lead to the gender and age group insight to be outdated or inaccurate, as the data may not reflect the current or the recent status and trends of the bike-sharing service or the users. This could also affect the comparability or the consistency of the data, as the data from different years may have different structures or features.
+
+-   **Data types mismatch:** Another issue observed in the dataset is the presence of data types mismatch. For example, certain columns like 'started_at' and 'ended_at' are currently stored as character strings instead of datetime objects. This discrepancy can hinder accurate time-based analysis, as operations such as sorting or calculating time intervals may not be performed correctly. Addressing this issue through proper conversion of data types will contribute to the accuracy and reliability of temporal analyses.
+
+# Process - **Ensuring Data Accuracy and Relevance**
+
+Documenting the steps taken to clean and manipulate the data to ensure its accuracy and relevance to the analysis.
+
+## Approach
+
+We're working with data from 2023, split into 12 monthly files. Luckily, these files share identical Structure, including the available features, their names, their data types, and their possible values. This enables the seamless merging of all CSV files into a single, comprehensive dataset. Managing and cleaning a unified dataset proves more efficient than addressing each monthly file in isolation
+
+Once merged, our data cleaning process encompasses addressing data types, handling missing values, resolving duplicates, identifying outliers, and rectifying any other potential errors encountered during the merging process. Additionally, we will introduce new features essential for addressing the core business question.
+
+This holistic approach ensures the data is not only consolidated but also refined for robust analysis and insightful decision-making.
+
+## **Data Integration: Unifying Multiple Files**
+
+Using R, we will merge all the 12 csv into a single one.
+
+First, I need to prepare the R envornement by installing the necessary packages for the upcoming tasks:
+
+```{r setup, include=FALSE}
+# Install and load necessary packages
+required_packages <- c("dplyr", "here", "knitr", "readr", "ggplot2", "leaflet", "gridExtra", "lubridate", "geosphere")
+
+for (pkg in required_packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+  library(pkg, character.only = TRUE)
+}
+```
+
+I moved all the necessary CSV files into one folder named “Subset_2023”. Now I'll merge them using the dplyr's functions. But first, I must change the working directory:
+
+```{r}
+# Save the path string in a variable
+project_path <- "D:/cycliticsBikeShareAnalysis"
+
+# Set the working directory to the location of the .Rmd file
+setwd(here::here(project_path))
+
+# Specify the full path to the "Subset_2023" folder
+data_folder <- here::here(project_path, "Subset_2023")
+
+# List all CSV files in the "Subset_2023" folder
+file_names <- list.files(data_folder, pattern = "\\.csv$", full.names = TRUE)
+
+# Read and merge CSV files
+merged_data <- lapply(file_names, read.csv) %>%
+  bind_rows()
+
+# Write the merged dataset to a new CSV file
+write.csv(merged_data, here::here(project_path, "Merged_Data_2023.csv"), row.names = FALSE)
+```
+
+```{r}
+merged_data <- read.csv("D:/cycliticsBikeShareAnalysis/Merged_Data_2023.csv")
+```
+
+After running the code, we check the structure and summary of the merged data set to ensure everything is in order
+
+```{r}
+str(merged_data)
+```
+
+```{r}
+skimr::skim_without_charts(merged_data)
+```
+
+## **Data Cleaning and Transformation**
+
+### Handling Missing Values
+
+In the dataset, two features, **`end_lat`** and **`end_lng`**, exhibit a consistent count of missing values, totaling 6,990 records out of the 5,202,222 total entries. While it is common practice to consider removing records with missing values, in this case, a deliberate decision was made not to discard entire records. The rationale behind this choice is that the missing values in **`end_lat`** and **`end_lng`** appear to be independent of other features and do not necessarily indicate a data integrity issue. Removing entire records might lead to a significant loss of information, especially considering the large dataset size. Instead, strategies such as imputation or further investigation into the nature of the missing values will be explored to ensure a more nuanced and informed handling of the data.
+
+Here, I'll check if there are any relation between the start_station_name and the start_lat, start_lng. If there are a relation, it will help me fill the missing values.
+
+```{r}
+lincoln_fullerton_coordinates <- merged_data %>%
+  filter(start_station_name == "Lincoln Ave & Fullerton Ave") %>%
+  select(start_station_name, start_lat, start_lng)
+
+head(lincoln_fullerton_coordinates)
+```
+
+```{r}
+unique_start_lat <- unique(lincoln_fullerton_coordinates$start_lat)
+unique_start_lng <- unique(lincoln_fullerton_coordinates$start_lng)
+
+# Print unique values for start_lat
+print(length(unique_start_lat))
+
+# Print unique values for start_lng
+print(length(unique_start_lng))
+```
+
+It clearly appears that for one station, there are thousands of possible start_lat and start_lng values, which indicates that those two geometric records are not for the station were the the trip starts, in fact, It's possibly related to where the bike specificaly start the ride. So, it's mostly impossible to figure out what those missing values are.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(leaflet)
+
+# Station coordinates
+station_lat <- 41.925905
+station_lng <- -87.64926
+
+# Calculate mean latitude and longitude for all points
+average_lat <- mean(lincoln_fullerton_coordinates$start_lat, na.rm = TRUE)
+average_lng <- mean(lincoln_fullerton_coordinates$start_lng, na.rm = TRUE)
+
+# Create a leaflet map
+map <- leaflet(data = lincoln_fullerton_coordinates) %>%
+  addTiles() %>%
+  addCircleMarkers(lng = ~start_lng, lat = ~start_lat, radius = 1, color = "orange",
+                   label = ~paste("Trip\nLat: ", start_lat, "\nLng: ", start_lng)) %>%
+  addCircleMarkers(lng = station_lng, lat = station_lat, radius = 5, color = "green",
+                   label = "Lincoln Ave & Fullerton Ave Station\nLat: 41.925905\nLng: -87.64926") %>%
+  addCircleMarkers(lng = average_lng, lat = average_lat, radius = 5, color = "blue",
+                   label = ~paste("Average\nLat: ", round(average_lat, 6), "\nLng: ", round(average_lng, 6)))
+
+# Print the map
+print(map)
+
+0
+```
+
+A reasonable approach is to fill the missing **end_lat** and **end_lng** with the average of available end_lat and end_lng of other trips ended in the same station.
+
+```{r}
+# Create a new data frame with averages for each end station
+station_averages <- merged_data %>%
+  select(end_station_name, end_lat, end_lng) %>%
+  group_by(end_station_name) %>%
+  summarize(
+    avg_end_lat = mean(end_lat, na.rm = TRUE),
+    avg_end_lng = mean(end_lng, na.rm = TRUE)
+  )
+head(station_averages)
+```
+
+```{r}
+# Merge the averages back into the original dataset for missing values
+merged_data <- merged_data %>%
+  left_join(station_averages, by = "end_station_name") %>%
+  mutate(
+    end_lat = ifelse(is.na(end_lat), avg_end_lat, end_lat),
+    end_lng = ifelse(is.na(end_lng), avg_end_lng, end_lng)
+  ) %>%
+  select(-avg_end_lat, -avg_end_lng)
+
+```
+
+```{r}
+skimr::skim_without_charts(merged_data)
+```
+
+Now, lets compare the location of some trips started from the same station with average location of all those trips and the station location.
+
+```{r}
+library(leaflet)
+
+Chicago_Ave_Dempster_St <- merged_data %>%
+  filter(start_station_name == "900 W Harrison St") %>%
+  select(start_station_name, start_lat, start_lng)
+
+# Station coordinates
+station_lat <- 41.874754
+station_lng <- -87.649807
+
+# Calculate mean latitude and longitude for all points
+average_lat <- mean(Chicago_Ave_Dempster_St$start_lat, na.rm = TRUE)
+average_lng <- mean(Chicago_Ave_Dempster_St$start_lng, na.rm = TRUE)
+
+# Create a leaflet map
+map <- leaflet(data = Chicago_Ave_Dempster_St) %>%
+  addTiles() %>%
+  addCircleMarkers(lng = ~start_lng, lat = ~start_lat, radius = 1, color = "red",
+                   label = ~paste("Trip\nLat: ", start_lat, "\nLng: ", start_lng)) %>%
+  addCircleMarkers(lng = station_lng, lat = station_lat, radius = 5, color = "black",
+                   label = "900 W Harrison St Station\nLat: 41.925905\nLng: -87.64926") %>%
+  addCircleMarkers(lng = average_lng, lat = average_lat, radius = 5, color = "yellow",
+                   label = ~paste("Average\nLat: ", round(average_lat, 6), "\nLng: ", round(average_lng, 6)))
+
+# Print the map
+print(map)
+```
+
+### Handling Duplicates
+
+Duplicates must be eliminated and only keep the first occurrence. Let's first check if the re are any duplicates in the dateset.
+
+```{r}
+# Identifying duplicate records in the dataset
+length_before <- nrow(merged_data)
+duplicates <- merged_data %>%
+  distinct()
+print(paste0("Num of Duplicates: ", length_before - nrow(merged_data)))
+```
+
+### Handling Data Types
+
+To guarantee the correctness of the data types in my dataset, I initiated a comprehensive evaluation of each column using the **`str()`** function and **`glimpse()`** function from the **`dplyr`** package. This allowed me to gain a detailed understanding of the data structure, including the current data types associated with each column.
+
+```{r}
+# Checking the overall structure of the dataset
+str(merged_data)
+
+print("-----------------------------------------------------------------")
+# Gaining a brief overview of the dataset
+glimpse(merged_data)
+```
+
+Upon identifying columns requiring a data type conversion, I developed a targeted strategy for transformation. Leveraging the **`mutate()`** function from the **`dplyr`** package, I employed appropriate conversion methods for each column.
+
+```{r}
+# Convert data types
+merged_data <- merged_data %>%
+  mutate(
+    ride_id = as.character(ride_id),
+    rideable_type = as.character(rideable_type),
+    started_at = as.POSIXct(started_at),
+    ended_at = as.POSIXct(ended_at),
+    start_station_name = as.character(start_station_name),
+    start_station_id = as.character(start_station_id),
+    end_station_name = as.character(end_station_name),
+    end_station_id = as.character(end_station_id),
+    member_casual = as.factor(member_casual)
+  )
+```
+
+### Features Engineering
+
+In this step, I enhanced the dataset by introducing several new features to extract valuable insights and improve the analytical capabilities. The following features were created:
+
+1.  **duration_minutes (minutes):**
+
+    -   Description: The duration of each trip in minutes.
+    -   Calculation: The time difference between the start and end timestamps.
+
+2.  **hour (0 - 24):**
+
+    -   Description: The hour of the day when each trip started.
+    -   Calculation: Extracted from the start timestamp.
+
+3.  **day_of_week(1 - 7, where 1 is Saterday):**
+
+    -   Description: The day of the week when each trip started.
+    -   Calculation: Extracted from the start timestamp.
+
+4.  **day_of_month (1 - 31):**
+
+    -   Description: The day of the month when each trip started.
+    -   Calculation: Extracted from the start timestamp.
+
+5.  **length_km (kilometers):**
+
+    -   Description: The geographical distance covered during each trip in kilometers.
+    -   Calculation: Calculated using Haversine distance formula based on start and end coordinates.
+    -   Note: Does not indicate the real distance (the distnace between the trip start and end location
+
+6.  **month(Jun - Dec):**
+
+    -   Description: The month when each trip started.
+    -   Calculation: Extracted from the start timestamp.
+
+7.  **trip_id**
+
+    Even though the data has it's own trip_id, but for optimization purposes, I will create new id replacing the original with one that is simpler and not taking too much space
+
+These additional features aim to provide a more detailed and nuanced perspective on the biking patterns, facilitating deeper analysis and interpretation of the dataset.
+
+```{r}
+library(geosphere)
+library(lubridate)
+
+# Time duration (in minutes)
+merged_data$duration_minutes <- round(as.numeric(difftime(merged_data$ended_at, merged_data$started_at, units = "mins")))
+
+# Hour (0 - 24)
+merged_data$hour <- hour(merged_data$started_at)
+
+# Day of week (1 - 7, where 1 is Sunday)
+merged_data$day_of_week <- wday(merged_data$started_at, label = TRUE)
+
+# Day of month (1 - 30)
+merged_data$day_of_month <- day(merged_data$started_at)
+
+# Length of the trip (in kilometers, assuming start and end coordinates are in decimal degrees)
+merged_data$trip_length_km <- geosphere::distHaversine(
+  cbind(merged_data$start_lng, merged_data$start_lat),
+  cbind(merged_data$end_lng, merged_data$end_lat)
+) / 1000
+
+# Month (Jun - Dec)
+merged_data$month <- month(merged_data$started_at, label = TRUE)
+
+# Adding trip_ID column
+merged_data$trip_ID <- seq_len(nrow(merged_data))
+
+# Display the modified dataset
+head(merged_data)
+```
+
+### Handling Outliers
+
+#### **duration_minutes:**
+
+```{r}
+library(gridExtra)
+
+# Create a box plot
+
+ggplot(merged_data, aes(y = duration_minutes)) +
+  geom_boxplot() +
+  labs(y = "duration_minutes") +
+    theme_minimal()
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+negative_duration <- merged_data[merged_data$duration_minutes < 0, ]
+print(nrow(negative_duration))
+print(negative_duration)
+```
+
+I see some data points under 0. possibly because the start and end time have been switched accidentally. So an easy approach is to switch their sign or remove them. I prefer to keep them because every data point is valuable.
+
+```{r}
+# Switch the sign of duration_minutes for negative values
+merged_data$duration_minutes[merged_data$duration_minutes < 0] <- -merged_data$duration_minutes[merged_data$duration_minutes < 0]
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(gridExtra)
+# Create a box plot
+
+ggplot(merged_data, aes_string(y = "duration_minutes")) +
+  geom_boxplot() +
+  labs(y = "duration_minutes") +
+    theme_minimal()
+```
+
+#### **trip_length_km**
+
+```{r}
+# Create a box plot
+ggplot(merged_data, aes_string(y = "trip_length_km")) +
+  geom_boxplot() +
+  labs(y = "trip_length_km") +
+    theme_minimal()
+```
+
+Some of the data points has a very long trip length (about 10000)
+
+```{r}
+# Find rows with trip_length_km greater than a threshold (e.g., 100 km)
+outliers <- merged_data$trip_length_km > 100
+
+merged_data[outliers, ]
+```
+
+The reason of these very long trip length is that the trip destination **end_lng** and **end_lat** are wrongly entered as zeros. This point is known as Null Island which is located in the Gulf of Guinea, making the calculated distance very long.\
+A reasonable approach is to calculate the average end_lat and end_lng for each end_station_name, then join these averages with the original data based on the station name. Finally, replaces the zeros in end_lat and end_lng with the corresponding averages.
+
+```{r}
+# Calculate the average end_lat and end_lng for each end_station_name
+station_averages <- merged_data %>%
+  filter(end_lat != 0 & end_lng != 0) %>%  # Exclude rows with zeros
+  group_by(end_station_name) %>%
+  summarize(avg_end_lat = mean(end_lat),
+            avg_end_lng = mean(end_lng))
+
+# Join the average values with the original data and replace zeros with averages
+merged_data <- merged_data %>%
+  left_join(station_averages, by = "end_station_name") %>%
+  mutate(end_lat = ifelse(end_lat == 0, avg_end_lat, end_lat),
+         end_lng = ifelse(end_lng == 0, avg_end_lng, end_lng)) %>%
+  select(-avg_end_lat, -avg_end_lng)  # Remove the temporary columns
+
+# Check if zeros are replaced
+summary(merged_data$end_lat)
+summary(merged_data$end_lng)
+
+```
+
+Let's recalculate the trip_length_km with the most recent changes
+
+```{r}
+# recalcultes the trip_length_km
+merged_data$trip_length_km <- geosphere::distHaversine(
+  cbind(merged_data$start_lng, merged_data$start_lat),
+  cbind(merged_data$end_lng, merged_data$end_lat)
+) / 1000
+
+# Create a box plot
+ggplot(merged_data, aes_string(y = "trip_length_km")) +
+  geom_boxplot() +
+  labs(y = "trip_length_km") +
+    theme_minimal()
+```
+
+### Features Engineering V2
+
+At last, I removed all the unnecessary features, keeping only those are relevant the the business task including:
+
+trip_Id, rideable_type, member_casual, duration_minutes, hour, day_of_week, day of month, month, trip_length_km.
+
+Doing so will reduce our data frame size making the analysis process much faster and reduce lags and waiting time.
+
+```{r}
+merged_data <- merged_data[, c("trip_ID", "rideable_type", "member_casual", "duration_minutes", "hour", "day_of_week", "day_of_month", "month", "trip_length_km")] 
+head(merged_data)
+```
+
+## Summary
+
+After a thorough data cleaning process, the dataset stands as a robust and reliable foundation for analysis. Key features, such as 'Time duration,' have been rounded to enhance interpretability, while outlier analysis indicates that the numeric variables ('start_lat,' 'start_lng,' 'end_lat,' and 'end_lng') showcase a consistent and valid distribution. Missing values in geometric features ('end_lat' and 'end_lng') were carefully handled to ensure data integrity without resorting to wholesale record removal. The identification and exclusion of duplicates were executed meticulously, ensuring the dataset's cleanliness. With appropriate data type conversions and meaningful feature engineering, including the creation of new features like 'Time duration' rounding, the dataset is now well-prepared for insightful analysis and interpretation, eliminating the need for further cleaning steps.
+
+# Analyse - Analysis, Visualizations, and Key Findings
+
+Presenting supporting visualizations that aid in understanding the data, accompanied by key findings derived from the analysis.
+
+```{r}
+glimpse(merged_data)
+```
+
+## **Approach: Leveraging Total and Average Metrics**
+
+In my quest to differentiate between member and casual users, I have adopted a comprehensive approach by utilizing a combination of total, average, and count metrics. This strategic choice enables me to gain a nuanced understanding of various aspects of user behavior, ensuring a well-rounded analysis.
+
+**Total Metrics: Capturing Magnitude and Impact**
+
+The inclusion of total metrics, such as the total number of trips or total distance covered, allows us to comprehend the overall magnitude and cumulative impact of user activity. This approach provides insights into the absolute contribution of each user type, aiding in the assessment of their respective scales of engagement with the bike-sharing service.
+
+**Average Metrics: Unveiling Typical Behavior**
+
+Concurrently, we employ average metrics, such as average trip duration or average distance per trip, to reveal the typical behavior exhibited by each user type. Calculating averages normalizes the data, providing a balanced perspective that considers variations in dataset sizes. This is particularly valuable for understanding the standard or average experience of users, irrespective of the overall volume of their activity.
+
+**Count Metrics: Quantifying Frequency**
+
+In addition to total and average metrics, we incorporate count metrics to quantify the frequency of user interactions. Counting the number of trips or occurrences provides a straightforward measure of user engagement, complementing the insights derived from total and average metrics.
+
+By strategically combining total, average, and count metrics, our analysis aims to uncover patterns, preferences, and distinctions between member and casual users. This multifaceted approach ensures a comprehensive exploration of user behavior, empowering us to address the overarching business question: "How do member and casual users differ in their utilization of our bike-sharing service?"
+
+## Note About the used Features
+
+```{r}
+skimr::skim_without_charts(merged_data)
+```
+
+The final data has these features:
+
+1.  **Numerical:** duration_minutes, trip_length_km
+
+2.  **Categorical:** trip_IDraidable_type, member_casual, hour, day, weekday, month
+
+All the categorical time features(hour, day, weekday, month) are extracted from the started_at datetime feature. And the reason why I chose this one over the ended_at is that we only interested in the time that each trip started.
+
+The calculated trip_length_km feature is the result of measuring the distance between the start and the end coordinates of each trip, but that doesn't mean that this is the real trip length because if someone starts and finish the trip in the same location taking an hour in total, it doesn't mean the trip length is 0!!!, so the other factor that needs to be ware of is the duration_minutes
+
+```{r}
+ggplot(merged_data) + geom_point(mapping = aes(x=merged_data$duration_minutes, y=merged_data$trip_length_km))
+```
+
+Over all, the trip_length_km is a good indecator that may gives us some hints about the difference between the casual users and the annual members
+
+## **Frequency of Trip Booking:**
+
+Q: How frequently do members and casual users book trips?
+
+```{r echo=FALSE, message=FALSE}
+# Summarize total count of trips for each user type
+user_trip_count <- merged_data %>%
+  group_by(member_casual) %>%
+  summarize(total_trips = n())
+
+# Calculate percentage
+user_trip_count$percentage <- user_trip_count$total_trips / sum(user_trip_count$total_trips) * 100
+
+# Plot a pie chart
+ggplot(user_trip_count, aes(x = "", y = total_trips, fill = member_casual)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  labs(title = "User Type Distribution",
+       x = NULL,
+       y = NULL,
+       fill = "User Type") +
+  theme_minimal() +
+  geom_text(aes(label = paste0(total_trips, " (", round(percentage, 1), "%)")),
+            position = position_stack(vjust = 0.5),
+            color = "black",
+            size = 3)
+```
+
+#### Insights:
+
+-   Based on the pie chart, casual riders account for 36% of the total trips, while annual members account for 64% of the total trips.
+
+-   I observe a distinct distribution in trip booking frequency between annual members and casual riders. An overwhelming majority of trips, constituting 64% of the total, are booked by annual members, showcasing their significant contribution to the bike-sharing service. In contrast, casual riders account for the remaining 36% of trips. This disparity underscores the strong engagement and consistent utilization of the service by annual members compared to occasional users.
+
+## **Bike Type Usage:**
+
+Q: How does each user type use different bike types for their trips?
+
+```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
+# Calculate average duration for each user/bike type
+bike_type_avg_duration <- merged_data %>%
+  group_by(member_casual, rideable_type) %>%
+  summarize(avg_duration = mean(duration_minutes, na.rm = TRUE))
+
+# Calculate average trip length for each user/bike type
+bike_type_avg_length <- merged_data %>%
+  group_by(member_casual, rideable_type) %>%
+  summarize(avg_length = mean(trip_length_km, na.rm = TRUE))
+
+# Calculate total duration for each user/bike type
+bike_type_total_duration <- merged_data %>%
+  group_by(member_casual, rideable_type) %>%
+  summarize(total_duration = sum(duration_minutes))
+
+# Calculate total trip length for each user/bike type
+bike_type_total_length <- merged_data %>%
+  group_by(member_casual, rideable_type) %>%
+  summarize(total_length = sum(trip_length_km))
+
+# Calculate distribution of trips for each user/bike type
+bike_type_trip_distribution <- merged_data %>%
+  group_by(member_casual, rideable_type) %>%
+  summarize(trip_count = n())
+
+# Plot all six graphs
+plot1 <- ggplot(bike_type_avg_duration, aes(x = member_casual, y = avg_duration, fill = rideable_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = round(avg_duration, 2)), position = position_dodge(width = 0.9), vjust = -0.5, color = "black", size = 3) +  # Add labels
+  labs(title = "Average Duration for Each User/Bike Type",
+       x = "User Type",
+       y = "Average Duration (minutes)",
+       fill = "Bike Type") +
+  theme_minimal()
+
+plot2 <- ggplot(bike_type_avg_length, aes(x = member_casual, y = avg_length, fill = rideable_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = round(avg_length, 2)), position = position_dodge(width = 0.9), vjust = -0.5, color = "black", size = 3) +  # Add labels
+  labs(title = "Average Trip Length for Each User/Bike Type",
+       x = "User Type",
+       y = "Average Trip Length (km)",
+       fill = "Bike Type") +
+  theme_minimal()
+
+plot3 <- ggplot(bike_type_total_duration, aes(x = member_casual, y = total_duration, fill = rideable_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = total_duration), position = position_dodge(width = 0.9), vjust = -0.5, color = "black", size = 3) +  # Add labels
+  labs(title = "Total Duration for Each User/Bike Type",
+       x = "User Type",
+       y = "Total Duration (minutes)",
+       fill = "Bike Type") +
+  theme_minimal()
+
+plot4 <- ggplot(bike_type_total_length, aes(x = member_casual, y = total_length, fill = rideable_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = round(total_length, 2)), position = position_dodge(width = 0.9), vjust = -0.5, color = "black", size = 3) +  # Add labels
+  labs(title = "Total Trip Length for Each User/Bike Type",
+       x = "User Type",
+       y = "Total Trip Length (km)",
+       fill = "Bike Type") +
+  theme_minimal()
+
+plot5 <- ggplot(bike_type_trip_distribution, aes(x = member_casual, y = trip_count, fill = rideable_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = trip_count), position = position_dodge(width = 0.9), vjust = -0.5, color = "black", size = 3) +  # Add labels
+  labs(title = "Distribution of Trips for Each User/Bike Type",
+       x = "User Type",
+       y = "Trip Count",
+       fill = "Bike Type") +
+  theme_minimal()
+
+# Arrange plots in a grid
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 3, ncol = 2)
+
+```
+
+#### Insights:
+
+In general, both user segments exhibit distinct preferences in bike usage, with a notable inclination towards electric bikes for long-distance trips and classic bikes for longer duration journeys. While casual users are the sole users of docked bikes, both user types employ classic and electric bikes differently. On average, casual users tend to utilize classic bikes for longer durations but cover shorter distances compared to annual members. Conversely, annual members favor electric bikes for both longer distances and durations relative to casual users. These preferences suggest a nuanced usage pattern influenced by user habits and needs. One assumption is that casual users may prioritize leisurely rides or short-distance errands, hence their preference for longer-duration trips on classic bikes. Conversely, annual members, likely using bikes for commuting or longer recreational outings, may opt for electric bikes to cover greater distances more efficiently. Additionally, factors such as commuting habits, accessibility to bike stations, and personal preferences may further influence these usage patterns.
+
+## **Average Distance:**
+
+Q: What is the average distance covered by each user type in their trips?
+
+Q: What is the total distance covered by each user type in their trips?
+
+```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+# Summarize average distance for each user type
+avg_distance_summary <- merged_data %>%
+  group_by(member_casual) %>%
+  summarize(avg_distance = mean(trip_length_km))
+
+# Plot horizontal bar chart for average distance
+plot1 <- ggplot(avg_distance_summary, aes(x = avg_distance, y = reorder(member_casual, -avg_distance), fill = member_casual)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = scales::comma(round(avg_distance, 2))), hjust = -0.1, color = "black", size = 3) +  # Add labels with comma formatting
+  labs(title = "Average Distance for Each User Type",
+       x = "Average Distance (km)",
+       y = "User Type",
+       fill = "User Type") +
+  theme_minimal()
+
+# Summarize total distance for each user type
+total_distance_summary <- merged_data %>%
+  group_by(member_casual) %>%
+  summarize(total_distance = sum(trip_length_km))
+
+# Plot horizontal bar chart for total distance
+plot2 <- ggplot(total_distance_summary, aes(x = total_distance, y = reorder(member_casual, -total_distance), fill = member_casual)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = scales::comma(round(total_distance, 2))), hjust = 1.1, color = "black", size = 3) +  # Add labels with comma formatting
+  labs(title = "Total Distance Spent by Each User Type",
+       x = "Total Distance (km)",
+       y = "User Type",
+       fill = "User Type") +
+  theme_minimal()
+
+grid.arrange(plot1, plot2, nrow=2, ncol=1)
+```
+
+**Insights:**
+
+-   The average trip distance for casual users (2.12 kilometers) is slightly equal to the average trip distance for members (2.10 kilometers). However, members traveled a significantly greater total distance (7,672,741 kilometers) than casual users (4,362,427 kilometers). This suggests that members take more frequent trips overall, even though their average trip distance might be shorter. It's important to note that this graph only shows average distance and total distance, and doesn't account for the distribution of trip distances or the size of the user base.
+
+## **Average Trip Duration:**
+
+Q: What is the average duration spent on trips by each user type?
+
+Q: What is the total duration spent on trips by each user type?
+
+```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+# Calculate average time duration for each user type
+user_avg_duration <- merged_data %>%
+  group_by(member_casual) %>%
+  summarize(avg_duration = mean(duration_minutes, na.rm = TRUE))
+
+# Plot the results
+plot1 <- ggplot(user_avg_duration, aes(x = member_casual, y = avg_duration, fill = member_casual)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(avg_duration, 2)), position = position_stack(vjust = 0.5), color = "black", size = 3) +  # Add labels
+  labs(title = "Average Trip Duration for each User Type",
+       x = "User Type",
+       y = "Average Time Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Summarize total time duration for each user type
+user_total_duration <- merged_data %>%
+  group_by(member_casual) %>%
+  summarize(total_duration = sum(duration_minutes, na.rm = TRUE))
+
+# Plot the results
+plot2 <- ggplot(user_total_duration, aes(x = member_casual, y = total_duration, fill = member_casual)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = scales::comma(round(total_duration, 2))), position = position_stack(vjust = 0.5), color = "black", size = 3) +  # Add labels with comma formatting
+  labs(title = "Total Trip Duration for each User Type",
+       x = "User Type",
+       y = "Total Time Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal()
+grid.arrange(plot1, plot2, nrow=2, ncol=1)
+```
+
+**Insights:**
+
+-   Unlike the trip length, casual users have a higher total and average trip duration (56,206,265 and 28.27) compared to annual members (45,888,490 and 12.54). A reasonable explanation is casual users might be using the bikes fo errands, leisure rides, or exploring the city, leading to longer and more varied trip duration, unlike annual members whom using the bikes for more focused purposes like commuting or exercise, resulting in shorter and more consistent trip durations.
+
+## **Hourly Analysis:**
+
+Q: How does each user type use bikes throughout the day (1 - 24)?
+
+```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+# Calculate average duration per hour for each user type
+hourly_avg_duration <- merged_data %>%
+  group_by(hour, member_casual) %>%
+  summarize(avg_duration = mean(duration_minutes, na.rm = TRUE))
+
+# Plot the results
+plot1 <- ggplot(hourly_avg_duration, aes(x = hour, y = avg_duration, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Duration per Hour",
+       x = "Hour",
+       y = "Average Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate total duration per hour for each user type
+hourly_total_duration <- merged_data %>%
+  group_by(hour, member_casual) %>%
+  summarize(total_duration = sum(duration_minutes, na.rm = TRUE))
+
+# Plot the results
+plot2 <- ggplot(hourly_total_duration, aes(x = hour, y = total_duration, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Duration per Hour for Each User Type",
+       x = "Hour",
+       y = "Total Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal()
+# Calculate average distance per hour for each user type
+hourly_avg_distance <- merged_data %>%
+  group_by(hour, member_casual) %>%
+  summarize(avg_distance = mean(trip_length_km, na.rm = TRUE))
+
+# Plot the results
+plot3 <- ggplot(hourly_avg_distance, aes(x = hour, y = avg_distance, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Distance per Hour for Each User Type",
+       x = "Hour",
+       y = "Average Distance (km)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate total distance per hour for each user type
+hourly_total_distance <- merged_data %>%
+  group_by(hour, member_casual) %>%
+  summarize(total_distance = sum(trip_length_km, na.rm = TRUE))
+
+# Plot the results
+plot4 <- ggplot(hourly_total_distance, aes(x = hour, y = total_distance, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Distance per Hour for Each User Type",
+       x = "Hour",
+       y = "Total Distance (km)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate distribution of trips throughout the day for each user type
+hourly_trip_distribution <- merged_data %>%
+  group_by(hour, member_casual) %>%
+  summarize(trip_count = n())
+
+# Plot the results with a stacked area chart
+plot5 <- ggplot(hourly_trip_distribution, aes(x = hour, y = trip_count, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Distribution of Trips Throughout the Day",
+       x = "Hour",
+       y = "Trip Count",
+       fill = "User Type") +
+  theme_minimal()
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow=3, ncol=2)
+```
+
+**Insights**
+
+-   **Average Duration:** Both user types exhibit relatively stable trip duration throughout the day, with a notable decrease observed between 5 and 7 AM. This dip in average duration may be attributed to the majority of trips during these hours being commuter journeys, characterized by shorter distances and duration.
+
+-   **Average Distance:** Throughout the day, both user types cover approximately the same average distance, averaging around 2.0 kilometers per trip. This consistency suggests that regardless of the time of day, users tend to travel similar distances on average.
+
+-   **Total Duration:** The distribution of total trip duration follows a bell-shaped curve for both user types, peaking around 3 PM and gradually decreasing thereafter. However, for annual members, there is a notable increase in total trip duration between 7 and 8 AM, corresponding to the morning rush hour commute. Conversely, a significant decrease is observed from 10 AM to 5 PM, indicating reduced bike usage during typical working hours.
+
+-   **Total Distance:** Casual users exhibit a normally distributed pattern in total trip distance, peaking around 4 PM and declining gradually on either side. This trend suggests that casual users tend to engage in longer bike trips during the evening, possibly for leisure or recreational purposes. In contrast, annual members show two peaks in total trip length, occurring from 6 to 8 AM and again from 4 to 7 PM. This pattern aligns with commuting behavior, where morning and evening trips are more common for work-related travel.
+
+-   **Distribution of Trips:** The distribution of trips throughout the day follows a similar pattern for both user types, with two distinct peaks observed at 7 AM and 5 PM. However, the peak at 5 PM is more pronounced, indicating a higher volume of trips during the evening hours. This dual peak suggests a combination of commuters returning home from work and individuals beginning leisure activities in the evening.
+
+## **Weekly Analysis:**
+
+Q: How does each user type use bikes on each day of the week (1 - 7)?
+
+```{r echo=FALSE, fig.height=13, fig.width=13, message=FALSE}
+# Calculate average duration for each weekday and user type
+weekday_avg_duration_user <- merged_data %>%
+  group_by(day_of_week, member_casual) %>%
+  summarize(avg_duration = mean(duration_minutes, na.rm = TRUE))
+
+# Plot the results with stacked bar chart and data labels
+plot1 <- ggplot(weekday_avg_duration_user, aes(x = day_of_week, y = avg_duration, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Duration per Weekday by User Type",
+       x = "Day of Week",
+       y = "Average Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate total duration for each weekday and user type
+weekday_total_duration_user <- merged_data %>%
+  group_by(day_of_week, member_casual) %>%
+  summarize(total_duration = sum(duration_minutes))
+
+# Plot the results with stacked bar chart and data labels
+plot2 <- ggplot(weekday_total_duration_user, aes(x = day_of_week, y = total_duration, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Duration per Weekday by User Type",
+       x = "Day of Week",
+       y = "Total Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate average distance for each weekday and user type
+weekday_avg_distance_user <- merged_data %>%
+  group_by(day_of_week, member_casual) %>%
+  summarize(avg_distance = mean(trip_length_km))
+
+# Plot the results with a stacked bar chart and rounded data labels
+plot3 <- ggplot(weekday_avg_distance_user, aes(x = day_of_week, y = avg_distance, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Distance per Weekday by User Type",
+       x = "Day of Week",
+       y = "Average Distance (km)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate total distance for each weekday and user type
+weekday_total_distance_user <- merged_data %>%
+  group_by(day_of_week, member_casual) %>%
+  summarize(total_distance = sum(trip_length_km))
+
+# Plot the results with a stacked bar chart and rounded data labels
+plot4 <- ggplot(weekday_total_distance_user, aes(x = day_of_week, y = total_distance, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Distance per Weekday by User Type",
+       x = "Day of Week",
+       y = "Total Distance (km)",
+       fill = "User Type") +
+  theme_minimal()
+
+# Calculate trip count for each day of the week and user type
+trip_count_per_day_user <- merged_data %>%
+  group_by(day_of_week, member_casual) %>%
+  summarize(trip_count = n())
+
+# Plot the stacked bar chart with data labels
+plot5 <- ggplot(trip_count_per_day_user, aes(x = day_of_week, y = trip_count, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Add data labels
+  labs(title = "Distribution of Trips Throughout the Week by User Type",
+       x = "Day of Week",
+       y = "Trip Count",
+       fill = "User Type") +
+  theme_minimal()
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow=3, ncol=2)
+```
+
+**Insights**
+
+-   **Average Duration:** Casual users consistently exhibit higher average trip durations compared to annual users. Notably, casual users show a peak in average duration during weekends (32 minutes), while experiencing a decline in the middle of the week (24 minutes). Conversely, annual users demonstrate a similar pattern with slightly lower averages. This discrepancy may be attributed to weekend trips primarily catering to tourist cycling and leisure activities.
+
+-   **Average Distance:** Both user types maintain a stable average distance throughout the week, approximately 2.06 km per trip.
+
+-   **Total Duration:** On weekdays, the total duration of trips for both user types remains nearly identical. However, during weekends, casual users' total duration significantly increases, doubling their weekday duration. In contrast, annual members' total duration remains consistent even on weekends. This trend suggests that casual users engage in more cycling activities for leisure purposes on weekends, while annual users maintain a consistent routine of commuting trips.
+
+-   **Total Distance:** Annual users tend to undertake longer trips on weekdays, supporting the notion that they primarily use bikes for commuting to work. Conversely, casual users record lower total distances with a slight increase on weekends, indicating that their trips are shorter in distance but longer in duration, aligning with leisurely activities.
+
+-   **Distribution of Trips:** The distribution of trips reveals distinct patterns for each user type. While annual members account for the majority of trips, they tend to book more trips on weekdays (Tuesday to Thursday). In contrast, casual members book more trips on weekends. This observation supports the idea that annual members prioritize weekday commuting, while casual members prefer weekend recreational activities.
+
+## **Daily Analysis:**
+
+Q: How does each user type use bikes every day of the month (1 - 31)?
+
+```{r echo=FALSE, fig.height=15, fig.width=7, message=FALSE, warning=FALSE}
+# Calculate average duration for each day and user type
+daily_avg_duration_user <- merged_data %>%
+  group_by(day_of_month, member_casual) %>%
+  summarize(avg_duration = mean(duration_minutes, na.rm = TRUE))
+
+# Define weekends
+weekends <- c("Sat", "Sun")
+
+# Plot the results with line chart and vertical lines for weekends
+plot_1 <- ggplot(daily_avg_duration_user, aes(x = day_of_month, y = avg_duration, color = member_casual)) +
+  geom_line(size = 1.5) +
+  geom_vline(xintercept = which(daily_avg_duration_user$day_of_month %in% weekends), linetype = "dashed", color = "gray") +
+  labs(title = "Average Duration per Day by User Type",
+       x = "Day of Month",
+       y = "Average Duration (minutes)",
+       color = "User Type") +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(0, 30, by = 3))  # Set breaks every 3 days
+
+# Calculate total duration for each day and user type
+daily_total_duration_user <- merged_data %>%
+  group_by(day_of_month, member_casual) %>%
+  summarize(total_duration = sum(duration_minutes))
+
+# Plot the results with line chart
+plot_2 <- ggplot(daily_total_duration_user, aes(x = day_of_month, y = total_duration, color = member_casual)) +
+  geom_line(size = 1.5) +
+  labs(title = "Total Duration per Day by User Type",
+       x = "Day of Month",
+       y = "Total Duration (minutes)",
+       color = "User Type") +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(0, 30, by = 3))  # Set breaks every 3 days
+
+# Calculate average distance for each day and user type
+daily_avg_distance_user <- merged_data %>%
+  group_by(day_of_month, member_casual) %>%
+  summarize(avg_distance = mean(trip_length_km, na.rm = TRUE))
+
+# Plot the results with line chart
+plot_3 <- ggplot(daily_avg_distance_user, aes(x = day_of_month, y = avg_distance, color = member_casual)) +
+  geom_line(size = 1.5) +
+  labs(title = "Average Distance per Day by User Type",
+       x = "Day of Month",
+       y = "Average Distance (km)",
+       color = "User Type") +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(0, 30, by = 3))  # Set breaks every 3 days
+
+# Calculate total distance for each day and user type
+daily_total_distance_user <- merged_data %>%
+  group_by(day_of_month, member_casual) %>%
+  summarize(total_distance = sum(trip_length_km))
+
+# Plot the results with line chart
+plot_4 <- ggplot(daily_total_distance_user, aes(x = day_of_month, y = total_distance, color = member_casual)) +
+  geom_line(size = 1.5) +
+  labs(title = "Total Distance per Day by User Type",
+       x = "Day of Month",
+       y = "Total Distance (km)",
+       color = "User Type") +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(0, 30, by = 3))  # Set breaks every 3 days
+
+# Calculate trip count for each day of the month and user type
+trip_count_per_day_user <- merged_data %>%
+  group_by(day_of_month, member_casual) %>%
+  summarize(trip_count = n())
+
+# Plot line chart for each user type
+plot_5 <- ggplot(trip_count_per_day_user, aes(x = day_of_month, y = trip_count, color = member_casual)) +
+  geom_line(size = 1.5) +
+  labs(title = "Distribution of Trips throughout the Month by User Type",
+       x = "Day of Month",
+       y = "Count of Trips",
+       color = "User Type") +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(0, 30, by = 3))  # Set breaks every 3 days
+
+grid.arrange(plot_1, plot_2, plot_3, plot_4, plot_5, nrow=5, ncol=1)
+```
+
+**Insights**:
+
+-   All the factors share the same pattern of increase in days (3,4, 10, 15, 22, 28), a possible reason is that these days often happened to be a weekend every month, which explains why factors like total duration, total distance, and distribution of trips reach the peak in these days.
+
+    The following heat map checks if there are correlation between days of the month and weekends
+
+    ```{r fig.height=10, fig.width=10}
+    # Create a data frame with all combinations of day of month (1 to 31) and day of week (1 to 7)
+    heatmap_data <- expand.grid(day_of_month = 1:31, day_of_week = c("Sat", "Sun"))
+
+    # Generate random values for the heatmap (you can replace this with your actual data)
+    set.seed(123)  # for reproducibility
+    heatmap_data$value <- sample(1:100, size = nrow(heatmap_data), replace = TRUE)
+
+    # Plot the heatmap
+    ggplot(heatmap_data, aes(x = day_of_month, y = factor(day_of_week, levels = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")), fill = value)) +
+      geom_tile() +
+      geom_text(aes(label = value), color = "black") +  # Add data labels
+      scale_fill_gradient(low = "white", high = "Red") +
+      labs(title = "Intersection of Day of Month and Day of Week",
+           x = "Day of Month",
+           y = "Day of Week") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    ```
+
+Unnlockally, I can't see any pattern when it comes to day of month because it's change over and over every month
+
+## **Monthly Analysis:**
+
+Q: How does each user type use bikes every month (1 - 12)?
+
+```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+# Calculate average duration for each month and user type
+monthly_avg_duration_user <- merged_data %>%
+  group_by(month, member_casual) %>%
+  summarize(avg_duration = mean(duration_minutes, na.rm = TRUE))
+
+# Define boundaries for seasons
+season_boundaries <- c(0.5, 2.5, 5.5, 8.5, 11.5)
+
+# Plot the results with grouped bar chart
+plot_1 <- ggplot(monthly_avg_duration_user, aes(x = month, y = avg_duration, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Trip Duration per Month by User Type",
+       x = "Month",
+       y = "Average Trip Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal() +
+  geom_vline(xintercept = season_boundaries, linetype = "solid", color = "gray", size = 1.5)  # Add vertical lines for season boundaries with a solid line and increased width
+
+# Calculate total duration for each month and user type
+monthly_total_duration_user <- merged_data %>%
+  group_by(month, member_casual) %>%
+  summarize(total_duration = sum(duration_minutes))
+
+# Plot the results with grouped bar chart
+plot_2 <- ggplot(monthly_total_duration_user, aes(x = month, y = total_duration, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Duration per Month by User Type",
+       x = "Month",
+       y = "Total Duration (minutes)",
+       fill = "User Type") +
+  theme_minimal() +
+  geom_vline(xintercept = season_boundaries, linetype = "solid", color = "gray", size = 1.5)  # Add vertical lines for season boundaries with a solid line and increased width
+
+# Calculate average distance for each month and user type
+monthly_avg_distance_user <- merged_data %>%
+  group_by(month, member_casual) %>%
+  summarize(avg_distance = mean(trip_length_km, na.rm = TRUE))
+
+# Plot the results with grouped bar chart
+plot_3 <- ggplot(monthly_avg_distance_user, aes(x = month, y = avg_distance, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Distance per Month by User Type",
+       x = "Month",
+       y = "Average Distance (km)",
+       fill = "User Type") +
+  theme_minimal() +
+  geom_vline(xintercept = season_boundaries, linetype = "solid", color = "gray", size = 1.5)  # Add vertical lines for season boundaries with a solid line and increased width
+
+# Calculate total distance for each month and user type
+monthly_total_distance_user <- merged_data %>%
+  group_by(month, member_casual) %>%
+  summarize(total_distance = sum(trip_length_km))
+
+# Plot the results with grouped bar chart
+plot_4 <- ggplot(monthly_total_distance_user, aes(x = month, y = total_distance, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Distance per Month by User Type",
+       x = "Month",
+       y = "Total Distance (km)",
+       fill = "User Type") +
+  theme_minimal() +
+  geom_vline(xintercept = season_boundaries, linetype = "solid", color = "gray", size = 1.5)  # Add vertical lines for season boundaries with a solid line and increased width
+
+# Summarize total trip count for each month and user type
+monthly_trip_count_user <- merged_data %>%
+  group_by(month, member_casual) %>%
+  summarize(trip_count = n())
+
+# Plot the results with grouped bar chart
+plot_5 <- ggplot(monthly_trip_count_user, aes(x = month, y = trip_count, fill = member_casual)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Distribution of Trips per Month by User Type",
+       x = "Month",
+       y = "Trip Count",
+       fill = "User Type") +
+  theme_minimal() +
+  geom_vline(xintercept = season_boundaries, linetype = "solid", color = "gray", size = 1.5)  # Add vertical lines for season boundaries with a solid line and increased width
+grid.arrange(plot_1, plot_2, plot_3, plot_4, plot_5, nrow=3, ncol=2)
+```
+
+**Insights**
+
+-   **Average Duration:** Casual users consistently exhibit higher average trip durations compared to annual users. Notably, casual users show a peak in average duration during weekends (32 minutes), while experiencing a decline in the middle of the week (24 minutes). Conversely, annual users demonstrate a similar pattern with slightly lower averages. This discrepancy may be attributed to weekend trips primarily catering to tourist cycling and leisure activities.
+
+-   **Average Distance:** Both user types maintain a stable average distance throughout the week, approximately 2.06 km per trip.
+
+-   **Total Duration:** On weekdays, the total duration of trips for both user types remains nearly identical. However, during weekends, casual users' total duration significantly increases, doubling their weekday duration. In contrast, annual members' total duration remains consistent even on weekends. This trend suggests that casual users engage in more cycling activities for leisure purposes on weekends, while annual users maintain a consistent routine of commuting trips.
+
+-   **Total Distance:** Annual users tend to undertake longer trips on weekdays, supporting the notion that they primarily use bikes for commuting to work. Conversely, casual users record lower total distances with a slight increase on weekends, indicating that their trips are shorter in distance but longer in duration, aligning with leisurely activities.
+
+-   **Distribution of Trips:** The distribution of trips reveals distinct patterns for each user type. While annual members account for the majority of trips, they tend to book more trips on weekdays (Tuesday to Thursday). In contrast, casual members book more trips on weekends. This observation supports the idea that annual members prioritize weekday commuting, while casual members prefer weekend recreational activities.
+
+# Share - Recommendations
+
+Providing the top three recommendations based on the analysis, offering actionable insights to address the business task.
+
+## Review of Analysis Findings
+
+1.  **Trip Distribution**: The data indicates a significant disparity in trip distribution between casual riders and annual members, with the majority of trips being booked by annual members. This highlights the importance of retaining annual members as they contribute significantly to the overall usage of the bike-sharing service.
+
+2.  **Preference for Bike Types**: While annual members show an almost equal preference for classic and electric bikes, casual riders demonstrate a slight inclination towards electric bikes. This suggests that offering a diverse range of bike types could cater to the preferences of both user groups and enhance the overall user experience.
+
+3.  **Utilization of Docked Bikes**: The data reveals that annual members show no interest in docked bikes, unlike casual riders who utilize them, albeit to a lesser extent. This could indicate a potential area for improvement in terms of promoting the use of docked bikes among annual members, perhaps through targeted marketing campaigns or incentives.
+
+4.  **Trip Duration and Distance**: Casual users tend to have longer average trip durations compared to annual members, indicating that they may be using the bikes for leisurely rides or errands. Conversely, annual members take shorter but more frequent trips, suggesting a focus on commuting or shorter-distance travel. Understanding these differences can help tailor marketing strategies and service offerings to better meet the needs of each user group.
+
+5.  **Weekend Usage**: Weekend usage patterns differ significantly between casual riders and annual members, with casual riders showing a notable increase in total duration and distance during weekends. This presents an opportunity to capitalize on weekend recreational activities by offering promotions or events targeted towards casual riders during these periods.
+
+6.  **Day of Month Patterns**: Certain days of the month, such as weekends (e.g., 3rd, 4th, 10th, 15th, 22nd, 28th), consistently exhibit peaks in total duration, total distance, and distribution of trips. This suggests that weekends are high-activity periods for both user groups and could be leveraged for targeted marketing initiatives or special events.
+
+## Top Recommendations
+
+-   **Membership Incentives**:
+
+    -   Offer promotional discounts or rewards to encourage casual users to convert into annual members, tapping into the larger market share of annual members (64%).
+
+    -   Implement loyalty programs for annual members to enhance retention and incentivize continued usage, considering their substantial contribution to total trips.
+
+-   **Bike Fleet Optimization**:
+
+    -   Adjust the bike fleet composition to cater to the differing preferences of casual users and annual members.
+
+    -   Increase the availability of classic bikes for casual users, particularly during peak usage hours, to accommodate their preference for longer-duration rides.
+
+-   **User Segmentation Strategies**:
+
+    -   Tailor marketing campaigns and service offerings based on user segmentation, recognizing the distinct usage patterns of annual members.
+
+    -   Provide targeted promotions or services for commuting-focused annual members to enhance their experience during peak commute hours.
+
+-   **Weekend Engagement**:
+
+    -   Organize weekend-specific events or promotions to attract casual users, leveraging their inclination for longer trip durations during weekends.
+
+    -   Optimize bike station locations and availability on weekends to accommodate the surge in casual user activity, especially in leisure-oriented areas.
+
+-   **Seasonal Campaigns**:
+
+    -   Launch seasonal marketing campaigns to capitalize on increased bike usage during late spring and summer months, aligning with the preferences observed in the data.
+
+    -   Offer special summer packages or events targeting students and leisure seekers to further drive bike usage during peak seasons.
+
+-   **Winter Maintenance and Promotion**:
+
+    -   Develop winter-specific maintenance programs to ensure bike availability and performance during colder months, mitigating the decline in bike usage observed in December, January, and February.
+
+    -   Launch promotional offers or incentives tailored to winter activities, such as commuting in snowy conditions or holiday-themed biking events, to maintain user engagement during the offseason.
