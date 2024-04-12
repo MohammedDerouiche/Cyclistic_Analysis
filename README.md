@@ -1,14 +1,16 @@
-# Cyclistic Analysis 
+# Cyclistic Analysis
 
-The Google Data Analytics Capstone case study number 1 named: "[How does a bike share company reach a speedy success]{.underline}". Created by **Mohammed Derouiche**, a Junior Data Analyst from Algeria.
+The Google Data Analytics Capstone case study number 1 named: "[How does a bike share company reach a speedy success]{.underline}". Created by [**Mohammed Derouiche**](https://www.linkedin.com/in/mohammed-derouiche-8958b425a), a Junior Data Analyst from Algeria.
+
+![](https://images.credly.com/images/d41de2b7-cbc2-47ec-bcf1-ebecbe83872f/GCC_badge_DA_1000x1000.png){width="700"}
+
+## Project Overview
 
 ![](https://miro.medium.com/v2/resize:fit:793/1*RIRe2uwWvkKFHzB43UpYKg.png)
 
-## Project Overview 
-
 This analysis delves into the operations and performance metrics of Cyclistic, a fictional bike-sharing company based in Chicago. Leveraging data from the years 2020 to 2023, the project aims to provide actionable insights and recommendations to optimize business strategies and enhance customer experience. By exploring various facets such as user behavior, bike usage patterns, and seasonal trends, the analysis seeks to uncover key drivers of success and opportunities for growth.
 
-## Methodology 
+## Methodology
 
 The analysis primarily utilizes the R programming language, along with popular libraries such as ggplot2 and tidyverse. Data preprocessing, cleaning, and transformation techniques are applied to ensure the reliability and accuracy of insights derived from the datasets. Exploratory data analysis (EDA) techniques, including visualization and statistical analysis, are utilized to uncover trends, patterns, and correlations within the data.
 
@@ -30,6 +32,6 @@ The analysis primarily utilizes the R programming language, along with popular l
 
 **User Experience Enhancement:** Develop user-centric initiatives such as weekend events, winter maintenance programs, and specialized services to enhance customer experience and satisfaction.
 
-## Note 
+## Note
 
 There is a missing folder named Subset_2023 that contains 12 csv files for all datasets in 2023. I didn't commit this folder due to its large size (about 1 GB), but you can download the recommended files from the this [link](https://divvy-tripdata.s3.amazonaws.com/index.html) and put them in a similar folder name "Subset_2023" (download only the 202301 to 202312 csv files).
