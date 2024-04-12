@@ -1,11 +1,13 @@
 ---
 title: "Cyclitics Analysis"
+author: "Mohammed Derouiche, A Junior Data Analyst"
+date: "April 13, 2024"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
-# Ask - **Navigating Cyclitics Challenge and Objectives**
+# Ask - **Navigating** Cyclistic **Challenge and Objectives**
 
 This chapter will provide context and a clear statement of the business task Cyclistic aims to address.
 
@@ -256,28 +258,22 @@ for (pkg in required_packages) {
 I moved all the necessary CSV files into one folder named “Subset_2023”. Now I'll merge them using the dplyr's functions. But first, I must change the working directory:
 
 ```{r}
-# Save the path string in a variable
-project_path <- "D:/cycliticsBikeShareAnalysis"
+# Specify the folder name containing the CSV files
+data_folder <- "Subset_2023"
 
-# Set the working directory to the location of the .Rmd file
-setwd(here::here(project_path))
-
-# Specify the full path to the "Subset_2023" folder
-data_folder <- here::here(project_path, "Subset_2023")
-
-# List all CSV files in the "Subset_2023" folder
+# List all CSV files in the data folder
 file_names <- list.files(data_folder, pattern = "\\.csv$", full.names = TRUE)
 
 # Read and merge CSV files
 merged_data <- lapply(file_names, read.csv) %>%
   bind_rows()
 
-# Write the merged dataset to a new CSV file
-write.csv(merged_data, here::here(project_path, "Merged_Data_2023.csv"), row.names = FALSE)
+# Write the merged dataset to a new CSV file in the same folder
+write.csv(merged_data, file.path(data_folder, "Merged_Data_2023.csv"), row.names = FALSE)
 ```
 
 ```{r}
-merged_data <- read.csv("D:/cycliticsBikeShareAnalysis/Merged_Data_2023.csv")
+merged_data <- read.csv("Merged_Data_2023.csv")
 ```
 
 After running the code, we check the structure and summary of the merged data set to ensure everything is in order
