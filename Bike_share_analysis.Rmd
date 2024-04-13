@@ -3,8 +3,9 @@ title: "Cyclitics Analysis"
 author: "Mohammed Derouiche, A Junior Data Analyst"
 date: "April 13, 2024"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: 
+    keep_tex: true
 ---
 
 # Ask - **Navigating** Cyclistic **Challenge and Objectives**
@@ -243,7 +244,7 @@ Using R, we will merge all the 12 csv into a single one.
 
 First, I need to prepare the R envornement by installing the necessary packages for the upcoming tasks:
 
-```{r setup, include=FALSE}
+```{r}
 # Install and load necessary packages
 required_packages <- c("dplyr", "here", "knitr", "readr", "ggplot2", "leaflet", "gridExtra", "lubridate", "geosphere")
 
@@ -257,7 +258,7 @@ for (pkg in required_packages) {
 
 I moved all the necessary CSV files into one folder named “Subset_2023”. Now I'll merge them using the dplyr's functions. But first, I must change the working directory:
 
-```{r}
+```{r Merge_all_datasets, eval=FALSE, include=FALSE}
 # Specify the folder name containing the CSV files
 data_folder <- "Subset_2023"
 
@@ -272,7 +273,7 @@ merged_data <- lapply(file_names, read.csv) %>%
 write.csv(merged_data, file.path(data_folder, "Merged_Data_2023.csv"), row.names = FALSE)
 ```
 
-```{r}
+```{r Upload_merged_data, include=FALSE}
 merged_data <- read.csv("Merged_Data_2023.csv")
 ```
 
@@ -315,9 +316,7 @@ print(length(unique_start_lng))
 
 It clearly appears that for one station, there are thousands of possible start_lat and start_lng values, which indicates that those two geometric records are not for the station were the the trip starts, in fact, It's possibly related to where the bike specificaly start the ride. So, it's mostly impossible to figure out what those missing values are.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(leaflet)
-
+```{r fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
 # Station coordinates
 station_lat <- 41.925905
 station_lng <- -87.64926
@@ -327,7 +326,7 @@ average_lat <- mean(lincoln_fullerton_coordinates$start_lat, na.rm = TRUE)
 average_lng <- mean(lincoln_fullerton_coordinates$start_lng, na.rm = TRUE)
 
 # Create a leaflet map
-map <- leaflet(data = lincoln_fullerton_coordinates) %>%
+leaflet(data = lincoln_fullerton_coordinates) %>%
   addTiles() %>%
   addCircleMarkers(lng = ~start_lng, lat = ~start_lat, radius = 1, color = "orange",
                    label = ~paste("Trip\nLat: ", start_lat, "\nLng: ", start_lng)) %>%
@@ -335,11 +334,6 @@ map <- leaflet(data = lincoln_fullerton_coordinates) %>%
                    label = "Lincoln Ave & Fullerton Ave Station\nLat: 41.925905\nLng: -87.64926") %>%
   addCircleMarkers(lng = average_lng, lat = average_lat, radius = 5, color = "blue",
                    label = ~paste("Average\nLat: ", round(average_lat, 6), "\nLng: ", round(average_lng, 6)))
-
-# Print the map
-print(map)
-
-0
 ```
 
 A reasonable approach is to fill the missing **end_lat** and **end_lng** with the average of available end_lat and end_lng of other trips ended in the same station.
@@ -374,9 +368,7 @@ skimr::skim_without_charts(merged_data)
 
 Now, lets compare the location of some trips started from the same station with average location of all those trips and the station location.
 
-```{r}
-library(leaflet)
-
+```{r fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
 Chicago_Ave_Dempster_St <- merged_data %>%
   filter(start_station_name == "900 W Harrison St") %>%
   select(start_station_name, start_lat, start_lng)
@@ -390,7 +382,7 @@ average_lat <- mean(Chicago_Ave_Dempster_St$start_lat, na.rm = TRUE)
 average_lng <- mean(Chicago_Ave_Dempster_St$start_lng, na.rm = TRUE)
 
 # Create a leaflet map
-map <- leaflet(data = Chicago_Ave_Dempster_St) %>%
+leaflet(data = Chicago_Ave_Dempster_St) %>%
   addTiles() %>%
   addCircleMarkers(lng = ~start_lng, lat = ~start_lat, radius = 1, color = "red",
                    label = ~paste("Trip\nLat: ", start_lat, "\nLng: ", start_lng)) %>%
@@ -398,9 +390,6 @@ map <- leaflet(data = Chicago_Ave_Dempster_St) %>%
                    label = "900 W Harrison St Station\nLat: 41.925905\nLng: -87.64926") %>%
   addCircleMarkers(lng = average_lng, lat = average_lat, radius = 5, color = "yellow",
                    label = ~paste("Average\nLat: ", round(average_lat, 6), "\nLng: ", round(average_lng, 6)))
-
-# Print the map
-print(map)
 ```
 
 ### Handling Duplicates
@@ -420,10 +409,6 @@ print(paste0("Num of Duplicates: ", length_before - nrow(merged_data)))
 To guarantee the correctness of the data types in my dataset, I initiated a comprehensive evaluation of each column using the **`str()`** function and **`glimpse()`** function from the **`dplyr`** package. This allowed me to gain a detailed understanding of the data structure, including the current data types associated with each column.
 
 ```{r}
-# Checking the overall structure of the dataset
-str(merged_data)
-
-print("-----------------------------------------------------------------")
 # Gaining a brief overview of the dataset
 glimpse(merged_data)
 ```
@@ -487,10 +472,7 @@ In this step, I enhanced the dataset by introducing several new features to extr
 
 These additional features aim to provide a more detailed and nuanced perspective on the biking patterns, facilitating deeper analysis and interpretation of the dataset.
 
-```{r}
-library(geosphere)
-library(lubridate)
-
+```{r Feautures_Engineering}
 # Time duration (in minutes)
 merged_data$duration_minutes <- round(as.numeric(difftime(merged_data$ended_at, merged_data$started_at, units = "mins")))
 
@@ -524,20 +506,16 @@ head(merged_data)
 #### **duration_minutes:**
 
 ```{r}
-library(gridExtra)
-
 # Create a box plot
-
 ggplot(merged_data, aes(y = duration_minutes)) +
   geom_boxplot() +
   labs(y = "duration_minutes") +
     theme_minimal()
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 negative_duration <- merged_data[merged_data$duration_minutes < 0, ]
 print(nrow(negative_duration))
-print(negative_duration)
 ```
 
 I see some data points under 0. possibly because the start and end time have been switched accidentally. So an easy approach is to switch their sign or remove them. I prefer to keep them because every data point is valuable.
@@ -547,10 +525,8 @@ I see some data points under 0. possibly because the start and end time have bee
 merged_data$duration_minutes[merged_data$duration_minutes < 0] <- -merged_data$duration_minutes[merged_data$duration_minutes < 0]
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(gridExtra)
+```{r message=FALSE, warning=FALSE}
 # Create a box plot
-
 ggplot(merged_data, aes_string(y = "duration_minutes")) +
   geom_boxplot() +
   labs(y = "duration_minutes") +
@@ -685,7 +661,7 @@ Over all, the trip_length_km is a good indecator that may gives us some hints ab
 
 Q: How frequently do members and casual users book trips?
 
-```{r echo=FALSE, message=FALSE}
+```{r message=FALSE, warning=FALSE}
 # Summarize total count of trips for each user type
 user_trip_count <- merged_data %>%
   group_by(member_casual) %>%
@@ -719,7 +695,7 @@ ggplot(user_trip_count, aes(x = "", y = total_trips, fill = member_casual)) +
 
 Q: How does each user type use different bike types for their trips?
 
-```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
+```{r fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
 # Calculate average duration for each user/bike type
 bike_type_avg_duration <- merged_data %>%
   group_by(member_casual, rideable_type) %>%
@@ -806,7 +782,7 @@ Q: What is the average distance covered by each user type in their trips?
 
 Q: What is the total distance covered by each user type in their trips?
 
-```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+```{r fig.height=10, fig.width=10, message=FALSE}
 # Summarize average distance for each user type
 avg_distance_summary <- merged_data %>%
   group_by(member_casual) %>%
@@ -842,7 +818,7 @@ grid.arrange(plot1, plot2, nrow=2, ncol=1)
 
 **Insights:**
 
--   The average trip distance for casual users (2.12 kilometers) is slightly equal to the average trip distance for members (2.10 kilometers). However, members traveled a significantly greater total distance (7,672,741 kilometers) than casual users (4,362,427 kilometers). This suggests that members take more frequent trips overall, even though their average trip distance might be shorter. It's important to note that this graph only shows average distance and total distance, and doesn't account for the distribution of trip distances or the size of the user base.
+The average trip distance for casual users (2.12 kilometers) is slightly equal to the average trip distance for members (2.10 kilometers). However, members traveled a significantly greater total distance (7,672,741 kilometers) than casual users (4,362,427 kilometers). This suggests that members take more frequent trips overall, even though their average trip distance might be shorter. It's important to note that this graph only shows average distance and total distance, and doesn't account for the distribution of trip distances or the size of the user base.
 
 ## **Average Trip Duration:**
 
@@ -850,7 +826,7 @@ Q: What is the average duration spent on trips by each user type?
 
 Q: What is the total duration spent on trips by each user type?
 
-```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+```{r fig.height=10, fig.width=10, message=FALSE}
 # Calculate average time duration for each user type
 user_avg_duration <- merged_data %>%
   group_by(member_casual) %>%
@@ -891,7 +867,7 @@ grid.arrange(plot1, plot2, nrow=2, ncol=1)
 
 Q: How does each user type use bikes throughout the day (1 - 24)?
 
-```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+```{r fig.height=10, fig.width=10, message=FALSE}
 # Calculate average duration per hour for each user type
 hourly_avg_duration <- merged_data %>%
   group_by(hour, member_casual) %>%
@@ -980,7 +956,7 @@ grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow=3, ncol=2)
 
 Q: How does each user type use bikes on each day of the week (1 - 7)?
 
-```{r echo=FALSE, fig.height=13, fig.width=13, message=FALSE}
+```{r fig.height=13, fig.width=13, message=FALSE}
 # Calculate average duration for each weekday and user type
 weekday_avg_duration_user <- merged_data %>%
   group_by(day_of_week, member_casual) %>%
@@ -1070,7 +1046,7 @@ grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow=3, ncol=2)
 
 Q: How does each user type use bikes every day of the month (1 - 31)?
 
-```{r echo=FALSE, fig.height=15, fig.width=7, message=FALSE, warning=FALSE}
+```{r fig.height=15, fig.width=7, message=FALSE, warning=FALSE}
 # Calculate average duration for each day and user type
 daily_avg_duration_user <- merged_data %>%
   group_by(day_of_month, member_casual) %>%
@@ -1185,7 +1161,7 @@ Unnlockally, I can't see any pattern when it comes to day of month because it's 
 
 Q: How does each user type use bikes every month (1 - 12)?
 
-```{r echo=FALSE, fig.height=10, fig.width=10, message=FALSE}
+```{r fig.height=10, fig.width=10, message=FALSE}
 # Calculate average duration for each month and user type
 monthly_avg_duration_user <- merged_data %>%
   group_by(month, member_casual) %>%
