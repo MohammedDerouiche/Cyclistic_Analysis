@@ -216,7 +216,7 @@ By analyzing the data, we can compare and contrast the behavior and preferences 
 
 4.  Why they use Cyclistics bikes, and what are their motivations or goals for using them.
 
-By answering these questions, we can gain insights into the needs and wants of the users, and provide recommendations on how to increase the number of annual members, retain the existing ones, and improve the overall customer satisfaction and loyalty.Data Processing
+By answering these questions, we can gain insights into the needs and wants of the users, and provide recommendations on how to increase the number of annual members, retain the existing ones, and improve the overall customer satisfaction and loyalty.
 
 ### Problems with the Data
 
