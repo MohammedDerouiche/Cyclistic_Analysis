@@ -1310,7 +1310,7 @@ Providing the top three recommendations based on the analysis, offering actionab
 
     -   Launch promotional offers or incentives tailored to winter activities, such as commuting in snowy conditions or holiday-themed biking events, to maintain user engagement during the offseason.
 
-## **Future Improvements and Recommendations**
+## **Future Improvements and areas to investigate**
 
 ### **1. Detailed Financial Data**
 
