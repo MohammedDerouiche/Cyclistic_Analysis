@@ -136,14 +136,6 @@ This [table](Content.xlsx) summarize the structure of all the datasets in 3 ways
 
 ### Addressing Licensing, Privacy, Security, and Accessibility
 
-To address licensing, we are following the terms and conditions of the Data License Agreement provided by Bikeshare on this link: [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). This agreement grants us a non-exclusive, royalty-free, limited, perpetual license to access, reproduce, analyze, copy, modify, distribute in our product or service and use the data for any lawful purpose. However, it also prohibits us from doing certain things, such as using the data in an unlawful manner, hosting or selling the data as a stand-alone dataset, accessing the data by unauthorized means, circumventing any access restrictions, using data mining or extraction methods, attempting to correlate the data with personal information of users, and stating or implying that we are affiliated or endorsed by Bikeshare. We are also respecting the trademarks and trade names of Bikeshare, the City of Chicago, and any sponsor of the Cyclistic service, and not using them without written permission. For the purpose of this case study, we are referring to the company as Cyclistics.
-
-To address privacy, we are protecting the personal information of Cyclistic users, such as their genders and birth years, and not disclosing or sharing it with anyone. We are also not attempting to identify or correlate the users with their names, addresses, or other information. We are only using the data for analytical purposes and not for any malicious or harmful purposes.
-
-To address security, we are storing the data in a secure location, such as a cloud-based platform or a password-protected device, and not exposing it to unauthorized access or tampering. We are also using encryption and authentication methods to ensure the integrity and confidentiality of the data.
-
-To address accessibility, we are making the data available and understandable to our intended audience, such as our stakeholders, clients, or customers, and not restricting or limiting their access to the data. We are also using appropriate formats and tools to present and visualize the data, such as tables, charts, graphs, or dashboards, and providing clear and concise explanations and interpretations of the data.
-
 1.  **Licensing:**
 
     -   The data used in this analysis is sourced from the City of Chicago’s Divvy bicycle sharing service, and the licensing agreement between Bikeshare and the City on this link: [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). explicitly grants a non-exclusive, royalty-free, limited, perpetual license for various uses.
@@ -194,7 +186,7 @@ ROCCC stands for [Reliable]{.underline}, [Original]{.underline}, [Comprehensive]
 
     -   [The data source]{.underline}: The data source is clearly stated and linked on the data website, which is <https://Cyclistic-tripdata.s3.amazonaws.com/index.html.> The data source is cited, as it gives credit and recognition to the data owners and providers.
 
-    -   [The data license]{.underline}: The data license is also clearly stated and linked on the data website, which is [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). The data license is cited, as it specifies the terms and conditions ofthe data usage and sharing
+    -   [The data license]{.underline}: The data license is also clearly stated and linked on the data website, which is [https://Cyclisticbikes.com/data-license-agreement](https://divvybikes.com/data-license-agreement). The data license is cited, as it specifies the terms and conditions of the data usage and sharing
 
 ## Subset Relevant to The Case Study
 
